@@ -1,0 +1,30 @@
+{
+  "name": "galapagos",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^3.24.0",
+    "@emotion/react": "^11.14.0",
+    "@tanstack/react-query": "^5.84.1",
+    "@types/node": "^24.1.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "axios": "^1.11.0",
+    "eslint": "^9.32.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.7.1",
+    "typescript": "^5.9.2",
+    "vite": "^7.0.6",
+    "vite-tsconfig-paths": "^5.1.4",
+    "zod": "^4.0.14"
+  }
+}
