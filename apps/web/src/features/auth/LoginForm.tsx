@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {useCreateAccessToken} from "@/features/auth/createAccessToken.ts";
 import {Alert, Box, Button, Input, Stack, Text} from "@chakra-ui/react";
 
 import {useTranslation} from "react-i18next";
 import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
-import {ApiError} from "@/api/types.ts";
 import {Field as ChakraField} from "@/components/ui/field.tsx";
 import {RiArrowRightLine} from "react-icons/ri";
 
@@ -32,26 +30,9 @@ export const LoginForm = () => {
 
         }
     )
-    const {createAccessToken} = useCreateAccessToken(
-        {
-            config: {
-                onError: (error: ApiError) => {
-                    reset(undefined, {keepValues: true});
-                    switch (error.status) {
-                        case 400:
-                            setLoginError(t("errors.invalidCredentials"))
-                            break
-                        default:
-                            setLoginError(t("errors.default"))
-                    }
-                }
-            }
-        }
-    )
     const {t} = useTranslation(TranslationNamespaces.LOGIN, {keyPrefix: "loginPage"});
     const submitHandler = (data: LoginFormInputs) => {
         setLoginError(null);
-        createAccessToken(data);
     }
     return (
         <Box width="sm">

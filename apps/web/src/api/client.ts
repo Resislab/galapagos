@@ -1,7 +1,12 @@
 import axios from "axios"
-import {getObjectFromLocalStorage} from "@/storage/localStorage.ts"
-import {AuthenticationType} from "@/api/types.ts"
-import {authenticationLocalStorageKey} from "@/context/AuthContext.tsx"
+import {createClient} from "@supabase/supabase-js";
+
+
+const supabaseURL = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+console.log("supabaseURL", supabaseURL)
+export const supabaseClient = createClient(supabaseURL, supabaseKey)
 
 export const apiClient = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
@@ -9,12 +14,6 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     async (config) => {
-        const authentication: AuthenticationType | undefined = getObjectFromLocalStorage<AuthenticationType>(authenticationLocalStorageKey)
-
-        if (authentication) {
-            const token: string = authentication.access_token
-            config.headers["Authorization"] = `Bearer ${token}`
-        }
         return config
     },
     (error) => {

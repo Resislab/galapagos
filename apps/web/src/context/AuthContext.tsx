@@ -1,45 +1,36 @@
-import {createContext, ReactNode, useCallback, useContext, useEffect, useState} from "react"
-import {getObjectFromLocalStorage} from "@/storage/localStorage.ts"
-import {AuthenticationType} from "@/api/types.ts"
+import {createContext, ReactNode, useContext, useEffect, useState} from "react"
+import {Session} from "@supabase/supabase-js"
+import {supabaseClient} from "@/api/client.ts";
+
 
 interface IAuthContext {
-    token: string | null
+    session: Session | null
     isAuthenticated: boolean
-    logout: () => void
 }
 
 const AuthContext = createContext<IAuthContext | undefined>(undefined)
 
-export const authenticationLocalStorageKey = "authentication"
-
 export const AuthProvider = ({children}: { children: ReactNode }) => {
-    const [token, setToken] = useState<string | null>(null)
+    const [session, setSession] = useState<Session | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-    const logout: () => void = useCallback(() => {
-        setToken(null)
-        setIsAuthenticated(false)
-        localStorage.removeItem(authenticationLocalStorageKey)
+    useEffect(() => {
+        supabaseClient.auth.getSession().then(({data: {session}}) => {
+            setSession(session)
+            setIsAuthenticated(!!session)
+        })
+
+        const {data: {subscription}} = supabaseClient.auth.onAuthStateChange((_event, session) => {
+            setSession(session)
+            setIsAuthenticated(!!session)
+        })
+
+        return () => subscription.unsubscribe()
     }, [])
 
-    useEffect(() => {
-        try {
-            const authentication: AuthenticationType | undefined = getObjectFromLocalStorage<AuthenticationType>(authenticationLocalStorageKey)
-            if (authentication && new Date().getTime() < new Date(authentication.expires_at).getTime() * 1000) {
-                setToken(authentication.access_token)
-                setIsAuthenticated(true)
-            } else {
-                localStorage.removeItem(authenticationLocalStorageKey)
-                setIsAuthenticated(false)
-            }
-        } catch {
-            localStorage.removeItem(authenticationLocalStorageKey)
-            setIsAuthenticated(false)
-        }
-    }, [])
 
     return (
-        <AuthContext.Provider value={{token, isAuthenticated, logout}}>
+        <AuthContext.Provider value={{session, isAuthenticated}}>
             {children}
         </AuthContext.Provider>
     )
