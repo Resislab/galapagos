@@ -1,21 +1,21 @@
 import {SUPPORTED_LANGUAGES_KEYS} from "@/i18n/supportedLanguages";
-import {EN_LOGIN} from "@/locales/en/login.ts";
-import {LOGIN_TYPE} from "@/locales/types/login.ts";
-import {FR_LOGIN} from "@/locales/fr/login.ts";
+import {EN_AUTH} from "@/locales/en/auth.ts";
+import {AUTH_TYPE} from "@/locales/types/auth.ts";
+import {FR_AUTH} from "@/locales/fr/auth.ts";
 
 export enum TranslationNamespaces {
-    LOGIN = "login",
+    AUTH = "auth",
 }
 
 type NamespaceTypingByNamespace = {
-    [TranslationNamespaces.LOGIN]: LOGIN_TYPE;
+    [TranslationNamespaces.AUTH]: AUTH_TYPE;
 };
 
 export const TranslationMappingByLanguage: Record<SUPPORTED_LANGUAGES_KEYS, NamespaceTypingByNamespace> = {
     [SUPPORTED_LANGUAGES_KEYS.FRENCH]: {
-        [TranslationNamespaces.LOGIN]: FR_LOGIN,
+        [TranslationNamespaces.AUTH]: FR_AUTH,
     },
     [SUPPORTED_LANGUAGES_KEYS.ENGLISH]: {
-        [TranslationNamespaces.LOGIN]: EN_LOGIN,
+        [TranslationNamespaces.AUTH]: EN_AUTH,
     },
 };

@@ -1,6 +1,5 @@
-export type LOGIN_TYPE = {
-    loginPage: {
-        organizationName: string
+export type AUTH_TYPE = {
+    signInPage: {
         email: string
         password: string
         alternative: string

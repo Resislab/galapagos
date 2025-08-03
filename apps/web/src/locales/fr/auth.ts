@@ -1,5 +1,5 @@
-export const FR_LOGIN = {
-    "loginPage": {
+export const FR_AUTH = {
+    "signInPage": {
         "tabName": "Connexion",
         "formTitle": "Connectez-vous",
         "email": "Email",
@@ -15,6 +15,21 @@ export const FR_LOGIN = {
         "logInButton": {
             "submitting": "Connexion...",
             "toSubmit": "Se connecter"
+        },
+    },
+    "signUpPage": {
+        "tabName": "Inscription",
+        "formTitle": "Créez un compte",
+        "email": "Email",
+        "password": "Mot de passe",
+        "submitButton": {
+            "submitting": "Création...",
+            "toSubmit": "Créer le compte"
+        },
+        "errors": {
+            "required": "Ce champs est requis.",
+            "signUpErrorTitle": "Problème de création de compte",
+            "default": "Contactez le support pour plus d'information."
         },
     }
 }

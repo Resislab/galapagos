@@ -1,24 +1,25 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {Alert, Box, Button, HStack, Input, Link as ChakraLink, Separator, Stack, Text} from "@chakra-ui/react";
-import {Link} from "react-router-dom"
+import {Alert, Box, Button, Input, Stack, Text} from "@chakra-ui/react";
 
 import {useTranslation} from "react-i18next";
 import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
 import {Field as ChakraField} from "@/components/ui/field.tsx";
 import {RiArrowRightLine} from "react-icons/ri";
 import {supabaseClient} from "@/api/client.ts";
-import {RouteUrls} from "@/router/route-urls.ts";
-import {PasswordInput} from "@/components/ui/password-input.tsx";
+import {PasswordInput, PasswordStrengthMeter} from "@/components/ui/password-input.tsx";
+import {calculatePasswordStrength, PasswordStrength} from "@/features/auth/password-strength.ts";
 
 export type LoginFormInputs = {
     email: string;
     password: string;
 }
 
-export const SignInForm = () => {
-    const [loginError, setLoginError] = useState<string | null>(null);
-    const [visiblePassword, setVisiblePassword] = useState(false)
+const initialPassword: string = ""
+
+export const SignUpForm = () => {
+    const [signUpError, setSignUpError] = useState<string | null>(null);
+    const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>(calculatePasswordStrength(initialPassword))
 
     const {
         register,
@@ -29,15 +30,15 @@ export const SignInForm = () => {
             criteriaMode: "all",
             defaultValues: {
                 email: "",
-                password: ""
+                password: initialPassword
             }
 
         }
     )
-    const {t} = useTranslation(TranslationNamespaces.AUTH, {keyPrefix: "signInPage"});
+    const {t} = useTranslation(TranslationNamespaces.AUTH, {keyPrefix: "signUpPage"});
     const submitHandler = (data: LoginFormInputs) => {
-        setLoginError(null);
-        supabaseClient.auth.signInWithPassword({
+        setSignUpError(null);
+        supabaseClient.auth.signUp({
             email: data.email,
             password: data.password,
         })
@@ -57,38 +58,34 @@ export const SignInForm = () => {
                         <ChakraField label={t("password")} errorText={t("errors.required")}
                                      invalid={!!errors.password} required>
                             <PasswordInput
-                                defaultValue="secret"
-                                visible={visiblePassword}
-                                onVisibleChange={setVisiblePassword}
-                                autoComplete={"off"} {...register("password", {required: t("errors.required")})} />
+                                defaultValue="visible"
+                                autoComplete="off"
+                                {...register("password",
+                                    {
+                                        required: t("errors.required"),
+                                        onChange: (e) => setPasswordStrength(calculatePasswordStrength(e.target.value))
+                                    })
+                                } />
                         </ChakraField>
+                        <PasswordStrengthMeter value={passwordStrength.score}/>
+
                     </Stack>
                     {
-                        loginError && (
+                        signUpError && (
                             <Alert.Root status="error">
                                 <Alert.Indicator/>
                                 <Alert.Content>
-                                    <Alert.Title>{t("errors.authenticationErrorTitle")}</Alert.Title>
+                                    <Alert.Title>{t("errors.signUpErrorTitle")}</Alert.Title>
                                     <Alert.Description>
-                                        {loginError}
+                                        {signUpError}
                                     </Alert.Description>
                                 </Alert.Content>
                             </Alert.Root>
                         )
                     }
                     <Button disabled={isSubmitting || !isValid || !isDirty} type="submit" bg="primary">
-                        {isSubmitting ? t("logInButton.submitting") : t("logInButton.toSubmit")} <RiArrowRightLine/>
+                        {isSubmitting ? t("submitButton.submitting") : t("submitButton.toSubmit")} <RiArrowRightLine/>
                     </Button>
-                    <HStack>
-                        <Separator flex="1"/>
-                        <Text flexShrink="0">{t("alternative")}</Text>
-                        <Separator flex="1"/>
-                    </HStack>
-                    <Box justifyContent="center" display="flex">
-                        <ChakraLink asChild>
-                            <Link to={RouteUrls.SIGN_UP()}>{t("createAccount")}</Link>
-                        </ChakraLink>
-                    </Box>
                 </Stack>
             </form>
         </Box>

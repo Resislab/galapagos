@@ -1,5 +1,5 @@
-export const EN_LOGIN = {
-    "loginPage": {
+export const EN_AUTH = {
+    "signInPage": {
         "organizationName": "",
         "email": "",
         "password": "",

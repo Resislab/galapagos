@@ -1,5 +1,6 @@
 import {RouteUrls} from "@/router/route-urls.ts";
 import {SignInPage} from "@/features/auth/SignInPage.tsx";
+import {SignUpPage} from "@/features/auth/SignUpPage.tsx";
 
 export const UnprotectedRoutes = [
     {
@@ -8,6 +9,6 @@ export const UnprotectedRoutes = [
     },
     {
         path: RouteUrls.SIGN_UP(),
-        element: <h1>Sign up</h1>
+        element: <SignUpPage/>
     },
 ]

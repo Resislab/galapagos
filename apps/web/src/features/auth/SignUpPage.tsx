@@ -1,12 +1,12 @@
 import {useTranslation} from "react-i18next";
 import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
 import {useTabName} from "@/hooks/tabName.ts";
-import {SignInForm} from "@/features/auth/SignInForm.tsx";
 import {Box, HStack} from "@chakra-ui/react";
 import React from "react";
+import {SignUpForm} from "@/features/auth/SignUpForm.tsx";
 
-export const SignInPage = () => {
-    const {t} = useTranslation(TranslationNamespaces.LOGIN, {keyPrefix: "signInPage"})
+export const SignUpPage = () => {
+    const {t} = useTranslation(TranslationNamespaces.AUTH, {keyPrefix: "signUpPage"})
     useTabName(t("tabName"))
     return (
         <HStack>
@@ -15,7 +15,7 @@ export const SignInPage = () => {
                  justifyContent="center"
                  alignItems="center"
             >
-                <SignInForm/>
+                <SignUpForm/>
             </Box>
             <Box bg="bg.subtle" flex={1} minH="100vh">
             </Box>
