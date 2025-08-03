@@ -1,30 +1,32 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
-import {Alert, Box, Button, Input, Stack, Text} from "@chakra-ui/react";
+import {Alert, Box, Button, HStack, Input, Link as ChakraLink, Separator, Stack, Text} from "@chakra-ui/react";
+import {Link} from "react-router-dom"
 
 import {useTranslation} from "react-i18next";
 import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
 import {Field as ChakraField} from "@/components/ui/field.tsx";
 import {RiArrowRightLine} from "react-icons/ri";
+import {supabaseClient} from "@/api/client.ts";
+import {RouteUrls} from "@/router/route-urls.ts";
 
 export type LoginFormInputs = {
-    username: string;
+    email: string;
     password: string;
 }
 
-export const LoginForm = () => {
+export const SignInForm = () => {
     const [loginError, setLoginError] = useState<string | null>(null);
 
     const {
         register,
         handleSubmit,
-        reset,
         formState: {errors, isSubmitting, isValid, isDirty},
     } = useForm<LoginFormInputs>({
             mode: "onChange",
             criteriaMode: "all",
             defaultValues: {
-                username: "",
+                email: "",
                 password: ""
             }
 
@@ -33,6 +35,10 @@ export const LoginForm = () => {
     const {t} = useTranslation(TranslationNamespaces.LOGIN, {keyPrefix: "loginPage"});
     const submitHandler = (data: LoginFormInputs) => {
         setLoginError(null);
+        supabaseClient.auth.signInWithPassword({
+            email: data.email,
+            password: data.password,
+        })
     }
     return (
         <Box width="sm">
@@ -40,10 +46,10 @@ export const LoginForm = () => {
                 <Stack gap="6">
                     <Text fontSize="xl">{t("formTitle")}</Text>
                     <Stack gap="3">
-                        <ChakraField label={t("username")} errorText={t("errors.required")}
+                        <ChakraField label={t("email")} errorText={t("errors.required")}
                                      required>
                             <Input
-                                autoComplete={"off"} {...register("username", {required: t("errors.required")})} />
+                                autoComplete={"off"} {...register("email", {required: t("errors.required")})} />
                         </ChakraField>
 
                         <ChakraField label={t("password")} errorText={t("errors.required")}
@@ -68,6 +74,16 @@ export const LoginForm = () => {
                     <Button disabled={isSubmitting || !isValid || !isDirty} type="submit" bg="primary">
                         {isSubmitting ? t("logInButton.submitting") : t("logInButton.toSubmit")} <RiArrowRightLine/>
                     </Button>
+                    <HStack>
+                        <Separator flex="1"/>
+                        <Text flexShrink="0">{t("alternative")}</Text>
+                        <Separator flex="1"/>
+                    </HStack>
+                    <Box justifyContent="center" display="flex">
+                        <ChakraLink asChild>
+                            <Link to={RouteUrls.SIGN_UP()}>{t("createAccount")}</Link>
+                        </ChakraLink>
+                    </Box>
                 </Stack>
             </form>
         </Box>

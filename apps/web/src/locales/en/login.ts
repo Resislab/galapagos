@@ -1,7 +1,7 @@
 export const EN_LOGIN = {
     "loginPage": {
         "organizationName": "",
-        "username": "",
+        "email": "",
         "password": "",
         "logInButton": {
             "submitting": "",

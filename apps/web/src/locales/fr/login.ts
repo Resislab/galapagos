@@ -2,9 +2,10 @@ export const FR_LOGIN = {
     "loginPage": {
         "tabName": "Connexion",
         "formTitle": "Connectez-vous",
-        "organizationName": "Nom de l'organisation",
-        "username": "Identifiant",
+        "email": "Email",
         "password": "Mot de passe",
+        "alternative": "ou",
+        "createAccount": "Créez un compte",
         "errors": {
             "required": "Ce champs est requis.",
             "authenticationErrorTitle": "Problème d'authentification",
