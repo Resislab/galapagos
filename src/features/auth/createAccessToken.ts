@@ -8,9 +8,9 @@ import {ApiError} from "@/api/types.ts";
 const createAccessTokenSchema = z.object({
     token_type: z.literal("Bearer"),
     access_token: z.string(),
-    organization_id: z.string().uuid(),
-    expires_at: z.string().datetime(),
-    user_id: z.string().uuid(),
+    organization_id: z.uuid(),
+    expires_at: z.iso.datetime(),
+    user_id: z.uuid(),
 });
 export type CreateAccessTokenType = z.infer<typeof createAccessTokenSchema>;
 

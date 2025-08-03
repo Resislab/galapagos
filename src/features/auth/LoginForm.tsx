@@ -1,35 +1,42 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useCreateAccessToken} from "@/features/auth/createAccessToken.ts";
-import {Alert, Box, Button, Field, Input, Stack, Text} from "@chakra-ui/react";
+import {Alert, Box, Button, Input, Stack, Text} from "@chakra-ui/react";
+
 import {useTranslation} from "react-i18next";
 import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
 import {ApiError} from "@/api/types.ts";
+import {Field as ChakraField} from "@/components/ui/field.tsx";
+import {RiArrowRightLine} from "react-icons/ri";
 
 export type LoginFormInputs = {
     username: string;
     password: string;
-    organization_name: string;
-};
+}
 
 export const LoginForm = () => {
-
     const [loginError, setLoginError] = useState<string | null>(null);
 
     const {
         register,
         handleSubmit,
-        formState: {errors, isSubmitting, isValid},
+        reset,
+        formState: {errors, isSubmitting, isValid, isDirty},
     } = useForm<LoginFormInputs>({
             mode: "onChange",
-            criteriaMode: "all"
-        }
-    );
+            criteriaMode: "all",
+            defaultValues: {
+                username: "",
+                password: ""
+            }
 
+        }
+    )
     const {createAccessToken} = useCreateAccessToken(
         {
             config: {
                 onError: (error: ApiError) => {
+                    reset(undefined, {keepValues: true});
                     switch (error.status) {
                         case 400:
                             setLoginError(t("errors.invalidCredentials"))
@@ -45,41 +52,25 @@ export const LoginForm = () => {
     const submitHandler = (data: LoginFormInputs) => {
         setLoginError(null);
         createAccessToken(data);
-    };
-
+    }
     return (
-        <form onSubmit={handleSubmit(submitHandler)} autoComplete={"off"} noValidate>
-            <Box bg="background.subtle">
-                <Stack gap="7" maxW="sm">
+        <Box width="sm">
+            <form onSubmit={handleSubmit(submitHandler)} autoComplete={"off"} noValidate>
+                <Stack gap="6">
                     <Text fontSize="xl">{t("formTitle")}</Text>
-                    <Stack gap="4_5" align="flex-start" maxW="sm">
-                        <Field.Root invalid={!!errors.organization_name} required>
-                            <Field.Label>{t("organizationName")}<Field.RequiredIndicator/></Field.Label>
+                    <Stack gap="3">
+                        <ChakraField label={t("username")} errorText={t("errors.required")}
+                                     required>
                             <Input
-                                autoComplete={"off"} {...register("organization_name", {required: t("errors.required")})} />
-                            {errors.organization_name && (
-                                <Field.ErrorText>{t("errors.required")}</Field.ErrorText>
-                            )}
-                        </Field.Root>
-                        <Field.Root required>
-                            <Field.Label>{t("username")}<Field.RequiredIndicator/></Field.Label>
-                            <Input autoComplete={"off"} {...register("username", {required: t("errors.required")})} />
-                            {errors.username && (
-                                <Field.ErrorText>{t("errors.required")}</Field.ErrorText>
-                            )}
-                        </Field.Root>
-                        <Field.Root invalid={!!errors.password} required>
-                            <Field.Label>{t("password")}<Field.RequiredIndicator/></Field.Label>
-                            <Input type={"password"}
-                                   autoComplete={"off"} {...register("password", {required: t("errors.required")})} />
-                            {errors.username && (
-                                <Field.ErrorText>{t("errors.required")}</Field.ErrorText>
-                            )}
-                        </Field.Root>
+                                autoComplete={"off"} {...register("username", {required: t("errors.required")})} />
+                        </ChakraField>
+
+                        <ChakraField label={t("password")} errorText={t("errors.required")}
+                                     invalid={!!errors.password} required>
+                            <Input
+                                autoComplete={"off"} {...register("password", {required: t("errors.required")})} />
+                        </ChakraField>
                     </Stack>
-                    <Button disabled={isSubmitting || !isValid} type="submit" bg="primary">
-                        {isSubmitting ? t("logInButton.submitting") : t("logInButton.toSubmit")}
-                    </Button>
                     {
                         loginError && (
                             <Alert.Root status="error">
@@ -93,9 +84,12 @@ export const LoginForm = () => {
                             </Alert.Root>
                         )
                     }
+                    <Button disabled={isSubmitting || !isValid || !isDirty} type="submit" bg="primary">
+                        {isSubmitting ? t("logInButton.submitting") : t("logInButton.toSubmit")} <RiArrowRightLine/>
+                    </Button>
                 </Stack>
-            </Box>
+            </form>
+        </Box>
 
-        </form>
     );
 };
