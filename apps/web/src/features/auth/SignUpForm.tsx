@@ -52,7 +52,19 @@ export const SignUpForm = () => {
                         <ChakraField label={t("email")} errorText={t("errors.required")}
                                      required>
                             <Input
-                                autoComplete={"off"} {...register("email", {required: t("errors.required")})} />
+                                autoComplete={"off"}
+                                {...register(
+                                    "email",
+                                    {
+                                        required: t("errors.required"),
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            message: t("errors.invalidEmail")
+                                        }
+
+                                    }
+                                )
+                                } />
                         </ChakraField>
 
                         <ChakraField label={t("password")} errorText={t("errors.required")}
