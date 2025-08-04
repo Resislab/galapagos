@@ -6,7 +6,7 @@ import {Box, HStack} from "@chakra-ui/react";
 import React from "react";
 
 export const SignInPage = () => {
-    const {t} = useTranslation(TranslationNamespaces.LOGIN, {keyPrefix: "signInPage"})
+    const {t} = useTranslation(TranslationNamespaces.AUTH, {keyPrefix: "signInPage"})
     useTabName(t("tabName"))
     return (
         <HStack>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Alert, Box, Button, HStack, Input, Link as ChakraLink, Separator, Stack, Text} from "@chakra-ui/react";
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 
 import {useTranslation} from "react-i18next";
 import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
@@ -19,6 +19,7 @@ export type LoginFormInputs = {
 export const SignInForm = () => {
     const [loginError, setLoginError] = useState<string | null>(null);
     const [visiblePassword, setVisiblePassword] = useState(false)
+    const navigate = useNavigate()
 
     const {
         register,
@@ -35,12 +36,18 @@ export const SignInForm = () => {
         }
     )
     const {t} = useTranslation(TranslationNamespaces.AUTH, {keyPrefix: "signInPage"});
-    const submitHandler = (data: LoginFormInputs) => {
+    const submitHandler = async (data: LoginFormInputs) => {
         setLoginError(null);
-        supabaseClient.auth.signInWithPassword({
+        const {error} = await supabaseClient.auth.signInWithPassword({
             email: data.email,
             password: data.password,
         })
+
+        if (error) {
+            setLoginError(error.message);
+        } else {
+            navigate(RouteUrls.HOME())
+        }
     }
     return (
         <Box width="sm">

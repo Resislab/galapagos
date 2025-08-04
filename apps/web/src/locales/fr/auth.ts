@@ -31,5 +31,6 @@ export const FR_AUTH = {
             "signUpErrorTitle": "Problème de création de compte",
             "default": "Contactez le support pour plus d'information."
         },
+        "success": "Votre compte a été créé succès: {{email}}"
     }
 }

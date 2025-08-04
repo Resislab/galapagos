@@ -9,6 +9,9 @@ import {RiArrowRightLine} from "react-icons/ri";
 import {supabaseClient} from "@/api/client.ts";
 import {PasswordInput, PasswordStrengthMeter} from "@/components/ui/password-input.tsx";
 import {calculatePasswordStrength, PasswordStrength} from "@/features/auth/password-strength.ts";
+import {toaster} from "@/components/ui/toaster.tsx";
+import {RouteUrls} from "@/router/route-urls.ts";
+import {useNavigate} from "react-router-dom";
 
 export type LoginFormInputs = {
     email: string;
@@ -20,6 +23,7 @@ const initialPassword: string = ""
 export const SignUpForm = () => {
     const [signUpError, setSignUpError] = useState<string | null>(null);
     const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>(calculatePasswordStrength(initialPassword))
+    const navigate = useNavigate()
 
     const {
         register,
@@ -36,12 +40,29 @@ export const SignUpForm = () => {
         }
     )
     const {t} = useTranslation(TranslationNamespaces.AUTH, {keyPrefix: "signUpPage"});
-    const submitHandler = (data: LoginFormInputs) => {
+    const submitHandler = async (data: LoginFormInputs) => {
         setSignUpError(null);
-        supabaseClient.auth.signUp({
+        const {error} = await supabaseClient.auth.signUp({
             email: data.email,
             password: data.password,
-        })
+        });
+
+        if (error) {
+            setSignUpError(error.message);
+            console.log("ERREUR", error.message)
+            toaster.create({
+                description: t("errors.signUpErrorTitle"),
+                type: "error",
+                closable: true,
+            });
+        } else {
+            toaster.create({
+                description: t("success", {email: data.email}),
+                type: "success",
+                closable: true,
+            });
+            navigate(RouteUrls.HOME())
+        }
     }
     return (
         <Box width="sm">
