@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
 import {useTabName} from "@/hooks/tabName.ts";
-import {SignInForm} from "@/features/auth/SignInForm.tsx";
+import {SignInForm} from "@/features/auth/SignIn/SignInForm.tsx";
 import {Box, HStack} from "@chakra-ui/react";
 import React from "react";
 

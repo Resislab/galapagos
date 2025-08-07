@@ -8,7 +8,7 @@ import {Field as ChakraField} from "@/components/ui/field.tsx";
 import {RiArrowRightLine} from "react-icons/ri";
 import {supabaseClient} from "@/api/client.ts";
 import {PasswordInput, PasswordStrengthMeter} from "@/components/ui/password-input.tsx";
-import {calculatePasswordStrength, PasswordStrength} from "@/features/auth/password-strength.ts";
+import {calculatePasswordStrength, PasswordStrength} from "@/features/auth/SignUp/password-strength.ts";
 import {toaster} from "@/components/ui/toaster.tsx";
 import {RouteUrls} from "@/router/route-urls.ts";
 import {useNavigate} from "react-router-dom";
