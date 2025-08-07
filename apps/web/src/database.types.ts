@@ -81,6 +81,59 @@ export type Database = {
           },
         ]
       }
+      roadmap_plan: {
+        Row: {
+          budget: number | null
+          budget_devise: string | null
+          created_at: string
+          created_by_id: string | null
+          description: string
+          end_date: string
+          id: string
+          name: string
+          organization_id: string
+          slug: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: number | null
+          budget_devise?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          description: string
+          end_date: string
+          id?: string
+          name: string
+          organization_id: string
+          slug: string
+          start_date: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: number | null
+          budget_devise?: string | null
+          created_at?: string
+          created_by_id?: string | null
+          description?: string
+          end_date?: string
+          id?: string
+          name?: string
+          organization_id?: string
+          slug?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roadmap_plan_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organization"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
