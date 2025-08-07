@@ -34,47 +34,52 @@ export type Database = {
   }
   public: {
     Tables: {
-      roadmap_project: {
+      organization: {
         Row: {
-          budget: number | null
-          budget_devise: string | null
-          created_at: string
-          description: string | null
-          end_date: string
+          created_at: string | null
           id: string
           name: string
-          reference: string
-          resource_usage_limit: number
-          start_date: string
-          updated_at: string
         }
         Insert: {
-          budget?: number | null
-          budget_devise?: string | null
-          created_at?: string
-          description?: string | null
-          end_date: string
+          created_at?: string | null
           id?: string
           name: string
-          reference: string
-          resource_usage_limit: number
-          start_date: string
-          updated_at?: string
         }
         Update: {
-          budget?: number | null
-          budget_devise?: string | null
-          created_at?: string
-          description?: string | null
-          end_date?: string
+          created_at?: string | null
           id?: string
           name?: string
-          reference?: string
-          resource_usage_limit?: number
-          start_date?: string
-          updated_at?: string
         }
         Relationships: []
+      }
+      organization_members: {
+        Row: {
+          created_at: string | null
+          id: string
+          organization_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          organization_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          organization_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_members_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organization"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
