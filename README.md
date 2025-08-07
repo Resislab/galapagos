@@ -19,7 +19,7 @@ Inspect and optimize roadmaps with evolution principles.
 
 You can run the project on your local machine following these steps:
 
-```
+```shell
 git clone ...
 cd project
 npm install
@@ -29,15 +29,33 @@ supabase start
 Write the supabase environment variables in a .env file in `apps/web/` and write the corresponding value given after
 running the last command:
 
-```
+```shell
 VITE_SUPABASE_URL=<API URL>
 VITE_SUPABASE_ANON_KEY=<anon key>
 ```
 
 Run the front app:
 
-```
+```shell
 npm run dev
 ```
 
 Galapagos is now running on localhost:3000, have fun!
+
+## Local development
+
+### Migrations
+
+Create a migration with an appropriate file name (use snake case):
+
+```shell
+supabase migration new <migration_file_name>
+```
+
+Edit the created file: `{timestamp}_<migration_file-name>.sql`
+
+Apply the migration:
+
+```shell
+supabase migration up
+```
