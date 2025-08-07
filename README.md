@@ -46,15 +46,17 @@ Galapagos is now running on localhost:3000, have fun!
 
 ### Migrations
 
-Create a migration with an appropriate file name (use snake case):
+Migrations are generated from declarative schemas using diff
+analysis ([Supabase doc](https://supabase.com/docs/guides/local-development/declarative-database-schemas)).
+
+1. Create (or modify) a schema in `supabase/schemas/<table>.sql`
+2. Generate the migration file using a relevant name (in snake case):
 
 ```shell
-supabase migration new <migration_file_name>
+supabase db diff -f <migration_file_name>
 ```
 
-Edit the created file: `{timestamp}_<migration_file-name>.sql`
-
-Apply the migration:
+3. Apply the migration using the binary (using the binary ensures the database types are updated):
 
 ```shell
 supabase migration up
