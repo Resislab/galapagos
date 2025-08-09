@@ -5,7 +5,7 @@ import {NAV_ITEMS, NavItem, SidebarContent} from "@/components/sidebar/SidebarCo
 import {LuPanelLeftClose, LuPanelLeftOpen} from "react-icons/lu";
 import {AppLogo} from "@/components/sidebar/AppLogo.tsx";
 import {useTranslation} from "react-i18next";
-import {Outlet, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 export const SidebarLayout = () => {
@@ -62,10 +62,6 @@ export const SidebarLayout = () => {
                     />
                 </Flex>
             </Box>
-
-            <Flex direction="column" flex="1" minW={0}>
-                <Outlet/>
-            </Flex>
         </Flex>
     );
 };

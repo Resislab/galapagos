@@ -6,8 +6,8 @@ import {ProtectedRoutes} from "@/router/ProtectedRoutes.tsx";
 
 export const RouterConfig = createBrowserRouter([
     ...UnprotectedRoutes,
+    ...ProtectedRoutes,
     {
-        path: "/",
         element: <ProtectedRoute/>,
         children: ProtectedRoutes
     }
