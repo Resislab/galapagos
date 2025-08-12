@@ -14,7 +14,6 @@ export const Profile = ({collapsed}: ProfileType) => {
     };
     const flexDirection = collapsed ? "column" : "row"
     const gap = collapsed ? "2" : "10"
-    console.log("profile is", flexDirection)
 
     return (
         <Box
