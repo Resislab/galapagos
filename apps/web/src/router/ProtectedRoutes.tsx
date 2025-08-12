@@ -1,6 +1,7 @@
 import {RouteUrls} from "@/router/route-urls.ts";
 import {Layout} from "@/components/layout/Layout.tsx";
-import {RoadmapPlansList} from "@/features/roadmapPlan/RoadmapPlanList.tsx";
+import {RoadmapPlanList} from "@/features/roadmapPlan/RoadmapPlanList.tsx";
+import {CreateRoadmapPlan} from "@/features/roadmapPlan/CreateRoadmapPlan/CreateRoadmapPlan.tsx";
 
 export const ProtectedRoutes = [
     {
@@ -9,7 +10,11 @@ export const ProtectedRoutes = [
         children: [
             {
                 path: RouteUrls.ROOT(),
-                element: <RoadmapPlansList/>,
+                element: <RoadmapPlanList/>,
+            },
+            {
+                path: RouteUrls.ROADMAP_PLAN.CREATE(),
+                element: <CreateRoadmapPlan/>,
             }
         ]
     },

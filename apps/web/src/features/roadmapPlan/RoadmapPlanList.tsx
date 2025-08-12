@@ -7,15 +7,12 @@ import {TranslationNamespaces} from "@/i18n/namespaceResources.ts";
 import {RouteUrls} from "@/router/route-urls.ts";
 
 
-export const RoadmapPlansList = () => {
+export const RoadmapPlanList = () => {
     const {data: roadmapPlans, isLoading, error} = useRoadmapPlans()
     const navigate = useNavigate()
     const {t} = useTranslation(TranslationNamespaces.ROADMAP_PLAN, {keyPrefix: "roadmapPlanList"});
 
-    if (isLoading) {
-        return <Text>Chargement des plans...</Text>
-    }
-
+    const roadmapList = isLoading ? [] : roadmapPlans
     if (error) {
         return <Text color="red.500">Erreur: {error.message}</Text>
     }
